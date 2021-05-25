@@ -23,6 +23,9 @@ def dropbox_s3_sync(event):
 
 @app.on_s3_event(bucket=os.environ['BUCKET_NAME'], events=['s3:ObjectCreated:*'])
 def s3_to_elasticsearch(event):
+    """
+    post data from s3 to Elasticsearch in format {'filename': 'abc.pdf', 'content': 'content of file'}
+    """
     bucket, file_name = event.bucket, event.key
     _, file_extension = os.path.splitext(file_name)
     s3 = boto3.client('s3')
@@ -37,12 +40,18 @@ def s3_to_elasticsearch(event):
     elif file_extension in ('.docx', '.doc'):
         file_content = filehandlers.get_doc_content(file)
     print(file_content)
-    elasticsearch.post_elasticsearch(content = {'filename': file_name, 'content': file_content})
-
+    
+    es = elasticsearch.ElasticsearchHelper()
+    res = es.post_document(content = {'filename': file_name, 'content': file_content})
+    app.log.info(f'response recieved from elasticsearch {res}')
+    return res
 
 @app.route('/search', methods=['POST'])
 def search_elasticsearch():
-    import pdb;pdb.set_trace()
+    """
+    search elasticsearch index based on search query provided as ?search="<text to be searched>" else
+    post a search query in json format like 'requests.post(url, headers={'content-type': 'application/json'}, json={"query": {"match_all": {}}})'
+    """
     search_query = json.load(open(os.path.join(os.path.dirname(__file__), 'chalicelib', 'config',  'search_query.json')))
     search_text = None
     
@@ -55,18 +64,23 @@ def search_elasticsearch():
         body = app.current_request.json_body
     app.log.debug(f"search_elasticsearchAPI{body}")
     
-    # print(body)
-    # query = body['search']
-    return elasticsearch.search(body)
+    es = elasticsearch.ElasticsearchHelper()
+    return es.search(body)
 
 @app.route('/delete_index', methods=['DELETE'])
 def delete_index():
+    """
+    deletes any index in elasticsearch
+    """
     app.log.info("deleting index")
-    return elasticsearch.delete_index()
+    es = elasticsearch.ElasticsearchHelper()
+    return es.delete_index()
 
 @app.route('/create-mapping', methods=['POST'])
 def create_mapping():
-    import pdb;pdb.set_trace()
+    """
+    creates a mapping based on default mapping template unless a template has been provided in json format.
+    """
     defalt_mapping = json.load(open(os.path.join(os.path.dirname(__file__), 'chalicelib', 'config',  'index_mapping.json')))
     
     try:
@@ -76,6 +90,7 @@ def create_mapping():
         body = None
         
     mapping = body if body else defalt_mapping
-    # mapping = body['mapping']
     app.log.debug(f"create_mappingAPI# {mapping}")
-    return elasticsearch.mapping_elasticsearch(mapping)
+    es = elasticsearch.ElasticsearchHelper()
+    
+    return es.create_mapping(mapping)
