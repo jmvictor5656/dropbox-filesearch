@@ -1,0 +1,24 @@
+{ 
+  "environment_variables": {
+    "ELASTICSEARCH_API_KEY_ID": "XWOlmXkBGldj0wiLyqmN",
+    "ELASTICSEARCH_API_KEY_SECRET": "PzcGYThXT26HNkzmpCzJCA",
+    "ELASTICSEARCH_CLOUD_ID": "kunal-file-search:dXMtd2VzdDEuZ2NwLmNsb3VkLmVzLmlvJDM2ZjBjYzI3NDJkNTRkZmNhMWRjYTMzM2UwZDgyMDkxJDFjZTg4N2Q5YjBkOTQ4ZDI4OWYxMDVlMWFkZjI4ZDM5",
+    "ELASTICSEARCH_INDEXNAME": "test-mapping",
+    "BUCKET_NAME": "some-kunal-bucket",
+    "BUCKET_KEY": "",
+    "DROPBOX_DIRECTORY_PATH": "",
+    "DROPBOX_ACCESS_TOKEN": "rYuXQuWWrcoAAAAAAAAAAbzQvGEx9QVuN5j5tFkh4oh9f0paVdbKTVbmOE31dfmT",
+    "MY_AWS_ACCESS_KEY": "AKIAJG3DRBYFPMCJME7A",
+    "MY_AWS_SECRET_KEY": "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"
+  },
+  "stages": {
+    "dev": {
+      "lambda_timeout": 900,
+      "lambda_memory_size": 512,
+      "api_gateway_stage": "api",
+      "iam_role_arn": "arn:aws:iam::614333436034:role/lambdas3Apigateway"
+    }
+  },
+  "version": "2.0",
+  "app_name": "dropbox-s3-elasticsearch-lambda"
+}

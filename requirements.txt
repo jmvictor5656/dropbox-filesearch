@@ -1,0 +1,5 @@
+dropbox
+boto3
+python-docx
+PyPDF2
+elasticsearch

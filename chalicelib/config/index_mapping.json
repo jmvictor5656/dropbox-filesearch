@@ -1,0 +1,54 @@
+{
+    "settings": {
+      "analysis": {
+        "analyzer": {
+          "content_custom_analyzer": {
+            "type": "custom", 
+            "tokenizer": "standard",
+            "char_filter": [
+              "html_strip"
+            ],
+            "filter": [
+              "lowercase",
+              "asciifolding",
+              "kstem",
+              "stop",
+              "trim",
+              "extract_alpha"
+            ]
+          },
+          "filename_custom_analyzer": {
+            "type": "custom", 
+            "tokenizer": "standard",
+            "filter": [ "custom_edge_n_gram" ]
+          }
+        },
+        "filter": {
+          "extract_alpha": {
+            "type": "keep_types",
+            "types": [ "<ALPHANUM>" ]
+          },
+          "custom_edge_n_gram": { 
+            "type": "edge_ngram",
+            "min_gram": 3,
+            "max_gram": 50
+      }
+          
+        }
+      }
+    }, 
+    "mappings": {
+      "properties": {
+        "content": {
+          "type": "text",
+          "analyzer": "content_custom_analyzer", 
+          "search_analyzer": "content_custom_analyzer"
+        },
+        "filename": {
+          "type": "text",
+          "analyzer": "filename_custom_analyzer",
+          "search_analyzer": "filename_custom_analyzer"
+        }
+      }
+    }
+  }

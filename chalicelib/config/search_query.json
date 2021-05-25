@@ -1,0 +1,31 @@
+{
+    "query": {
+      "bool": {
+        "should": [
+          {
+            "intervals" : {
+              "content" : {
+                "all_of" : {
+                  "ordered" : true,
+                  "intervals" : [
+                    {
+                      "match" : {
+                        "query" : "$REPLACE_WITH_SEARCH_TEXT",
+                        "max_gaps" : 0,
+                        "ordered" : true
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "match": {
+              "filename": "$REPLACE_WITH_SEARCH_TEXT"
+            }
+          }
+        ]
+      }
+    }
+  }
