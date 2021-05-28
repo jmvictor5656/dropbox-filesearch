@@ -11,7 +11,7 @@
                     {
                       "match" : {
                         "query" : "$REPLACE_WITH_SEARCH_TEXT",
-                        "max_gaps" : 0,
+                        "max_gaps" : 5,
                         "ordered" : true
                       }
                     }

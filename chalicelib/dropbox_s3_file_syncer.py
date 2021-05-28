@@ -17,13 +17,9 @@ class DropboxS3FileSyncer:
         import dropbox
         self.dbx = dropbox.Dropbox(token)
         self.path = path
-        self.s3_resource = boto3.resource('s3',
-                                          aws_access_key_id=os.environ['MY_AWS_ACCESS_KEY'],
-                                          aws_secret_access_key=os.environ['MY_AWS_SECRET_KEY'])
+        self.s3_resource = boto3.resource('s3')
         self.destination_bucket = destination_bucket
-        self.client = boto3.client('s3',
-                                   aws_access_key_id=os.environ['MY_AWS_ACCESS_KEY'],
-                                   aws_secret_access_key=os.environ['MY_AWS_SECRET_KEY'])
+        self.client = boto3.client('s3')
         self.s3_path = s3_path
 
     @staticmethod
