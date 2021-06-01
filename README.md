@@ -2,6 +2,9 @@
 
 A module writtin using [chalice](https://aws.github.io/chalice/) library to create lambda functions as well as API Gateway
 
+## FlowDiagram
+![Workflow](FlowDiagram.png)
+
 ## Configuration
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install packages.
